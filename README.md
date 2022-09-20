@@ -6,12 +6,12 @@ Minesweeper for mobile in the React Native framework
 ![image](./src/assets/GameSetup.png)
 ## Description
 
-A mobile game app featuring the 1989 classic, Minesweeper.
+A mobile game app featuring the 1989 classic, [Minesweeper](https://en.wikipedia.org/wiki/Minesweeper_(video_game)).
 
 ## Preparing the App
 
 - Initialize the project using ```npm i```
-- iOS - run ```cd ios && pod install``` to get pods (cocoapods required - follow download instructions here [here](https://cocoapods.org/))
+- iOS - run ```cd ios && pod install``` to get pods (cocoapods required - follow download instructions [here](https://cocoapods.org/))
 
 ## Running the App
 

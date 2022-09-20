@@ -8,12 +8,13 @@ const GameBoard: FunctionComponent<BoardProps>  = ({
   numOfCols,
   numOfMines,
   handleGameEnd,
+  gameEnded,
 }) => {
   const [grid, setGrid] = useState<CellObjProps[][]>()
 
   useEffect(() => {
     !grid && setGrid(createGridArray())
-  }, [])
+  }, [grid])
 
   const createGridArray = () => {
     // loop through number of rows to create an array of arrays of objects
@@ -79,23 +80,29 @@ const GameBoard: FunctionComponent<BoardProps>  = ({
     let row = cell.rPos
     let col = cell.cPos
 
+    if (cell.isRevealed || gameEnded) return
+
     // map over state with new isRevealed value
-    let localGrid = grid
+    let localGrid = [...grid]
     localGrid[row][col].isRevealed = true
     setGrid(localGrid)
 
     // end game if isMine
-    if (cell.isMine) handleGameEnd('You Lost! :(')
+    if (cell.isMine) {
+      revealMines()
+      handleGameEnd(false)
+      return
+    }
 
     // end game if num of unrevealed cells is 0 or unrevealed mines equals num of unrevealed cells
     let unrevealedNonMines = 0
-    grid.forEach(row => {
-      row.forEach((cell: CellObjProps) => {
-        if (cell.isRevealed) return
-        if (!cell.isMine) unrevealedNonMines++
+    localGrid?.forEach(localRow => {
+      localRow.forEach((localCell: CellObjProps) => {
+        if (localCell.isRevealed) return
+        if (!localCell.isMine) unrevealedNonMines++
       })
     })
-    if (unrevealedNonMines === 0) handleGameEnd('You Won! :D')
+    if (unrevealedNonMines === 0) handleGameEnd(true)
 
     // recursively reveal cells until no more touching adj 0s
     if (cell.value === 0) {
@@ -106,19 +113,31 @@ const GameBoard: FunctionComponent<BoardProps>  = ({
     }
   }
 
+  const revealMines = () => {
+    let localGrid = [...grid]
+    localGrid?.forEach(row => {
+      row.forEach((cell: CellObjProps) => {
+        if (cell.isMine) localGrid[cell.rPos][cell.cPos].isRevealed = true
+      })
+    })
+    setGrid(localGrid)
+  }
+
   return (
     <View style={styles.container}>
       {grid?.map((row, index) => {
         return (
-          <View style={{flexDirection: 'row'}}>
+          <View style={styles.row} key={index}>
             {grid?.[index]?.map((cell: CellObjProps) => {
               return (
                 <Cell
+                  key={`${cell.rPos}_${cell.cPos}`}
                   cell={grid[index][cell.cPos]}
                   value={cell.value}
                   isMine={cell.isMine}
                   isRevealed={cell.isRevealed}
                   revealCells={revealCells}
+                  gameEnded={gameEnded}
                 />
               )
             })}
@@ -132,10 +151,12 @@ const GameBoard: FunctionComponent<BoardProps>  = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    padding: 20,
-    backgroundColor: 'red',
     alignItems: 'center',
-  }
+    justifyContent: 'center',
+  },
+  row: {
+    flexDirection: 'row',
+  },
 })
 
 export default GameBoard

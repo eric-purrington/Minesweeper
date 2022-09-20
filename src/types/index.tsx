@@ -3,14 +3,16 @@ export interface CellProps {
   value?: number
   isMine?: boolean
   isRevealed?: boolean
-  revealCells: (arg1) => void
+  revealCells: (arg0: CellObjProps) => void
+  gameEnded: boolean
 }
 
 export interface BoardProps {
   numOfRows: number
   numOfCols: number
   numOfMines: number
-  handleGameEnd: (arg0) => void
+  handleGameEnd: (arg0: boolean) => void
+  gameEnded: boolean
 }
 
 export interface CellObjProps {
@@ -19,4 +21,10 @@ export interface CellObjProps {
   isRevealed?: boolean
   value?: number
   isMine?: boolean
+}
+
+export interface InputRowProps {
+  label: string
+  value: string
+  onChange: (arg0: string) => void
 }

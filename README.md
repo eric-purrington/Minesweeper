@@ -1,6 +1,9 @@
 # Minesweeper
 Minesweeper for mobile in the React Native framework
 
+![image](./src/assets/Win.png)
+![image](./src/assets/Lost.png)
+![image](./src/assets/GameSetup.png)
 ## Description
 
 A mobile game app featuring the 1989 classic, Minesweeper.
@@ -17,6 +20,6 @@ A mobile game app featuring the 1989 classic, Minesweeper.
 
 ## Directions for Future Development
 
-- 
-- 
-- 
+- AsyncStorage to bring up highscores
+- onLongPress to flag possible mines
+- Landscape orientation to allow for more columns
